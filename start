@@ -1,0 +1,10 @@
+#!/usr/bin/python3
+from src import gui
+
+daddyPath = "./"
+with open("./data/config.json", 'r') as f:
+    a = eval(f.read())
+    wallheavenApi = a["wallheaven"][0]
+    f.close()
+
+gui.main(daddyPath, wallheavenApi)
