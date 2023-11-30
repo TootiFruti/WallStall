@@ -52,7 +52,7 @@ def wallFetcher(wallheaven_api, args):
         pages = args["pages"]
     except KeyError:
         pages = default_args["pages"]
-    query_url = f"{BASE_URL}&q={tagname}&categories={categories}&purity={purity}&sorting={sorting}&atleast={atleast}&ratio={ratio}&pages={pages}"
+    query_url = f"{BASE_URL}&q={tagname}&categories={categories}&purity={purity}&sorting={sorting}&atleast={atleast}&ratio={ratio}&page={pages}"
     print(query_url)
     data = requests.get(query_url)
     data = data.json()["data"]

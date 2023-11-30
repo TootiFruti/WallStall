@@ -11,20 +11,19 @@ class MainWindow(QMainWindow):
         uic.loadUi(f"{daddypath}/src/MainWindow.ui", self)
         self.show()
 
-        self.Image.setScaledContents(True)
+        self.Image.setScaledContents(False)
 
         imagedata = [" "]
-        args = []
         currentImage = [0]
-        # self.setImage(imagedata[currentImage[0]][1], currentImage)
+        currentPage = [1]
 
         self.leftButton.clicked.connect(
             lambda: self.onLeftClick(currentImage, imagedata))
         self.rightButton.clicked.connect(
-            lambda: self.onRightClick(currentImage, imagedata, wallheavenApi))
+            lambda: self.onRightClick(currentPage, currentImage, imagedata, wallheavenApi))
 
         self.searchBarBtn.clicked.connect(
-            lambda: self.onSearchBarBtnClicked(currentImage, imagedata, wallheavenApi))
+            lambda: self.onSearchBarBtnClicked(currentPage, currentImage, imagedata, wallheavenApi))
 
         self.saveTheImageBtn.clicked.connect(
             lambda: self.saveImage(currentImage, imagedata, "test_img.png"))
@@ -41,7 +40,12 @@ class MainWindow(QMainWindow):
         img = QImage()
         img.loadFromData(requests.get(url).content)
         img = QPixmap(img)
-        self.Image.setPixmap(img)
+        aspectRatio = img.width() / img.height()
+        size = self.Image.size()
+        new_width = size.width()
+        new_height = int(new_width / aspectRatio)
+        scaled_pixmap = img.scaled(new_width, new_height)
+        self.Image.setPixmap(scaled_pixmap)
         print(f"current image = {url} currentImage={currentImage[0]}")
 
     def getImageData(self, args, wallheavenApi):
@@ -60,18 +64,22 @@ class MainWindow(QMainWindow):
             self.updateTextArea(
                 "wallheaven,cc", [str(imagedata)], [currentImage[0]-1])
 
-    def onRightClick(self, currentImage, imagedata, wallheavenApi):
-        imagedata = eval(imagedata[0])
+    def onRightClick(self, currentPage, currentImage, imagedata, wallheavenApi):
+        imgdata = eval(imagedata[0])
         print(f"currentImage: {currentImage[0]}")
-        url = imagedata[currentImage[0]+1][1]
+        url = imgdata[currentImage[0]+1][1]
         print(f"currentImage[0]+1: {currentImage[0]+1}")
         self.setImage(url, currentImage)
-        self.updateTextArea("wallheaven,cc", [str(imagedata)], currentImage)
+        self.updateTextArea("wallheaven,cc", [str(imgdata)], currentImage)
         currentImage[0] = currentImage[0] + 1
         if currentImage[0] == 23:
             print("Reached right end!\nLoading more data..")
-            imagedata = self.getImageData(
-                self.genArgs(wallheavenApi), wallheavenApi)
+            args = self.genArgs(wallheavenApi)
+            currentPage[0] += 1
+            args["pages"] = currentPage[0]
+            imgdata = self.getImageData(
+                args, wallheavenApi)
+            imagedata[0] = str(imgdata)
             print("Loaded!")
             currentImage[0] = 0
 
@@ -119,7 +127,7 @@ class MainWindow(QMainWindow):
         }
         return t
 
-    def onSearchBarBtnClicked(self, currentImage, imagedata, wallheavenApi):
+    def onSearchBarBtnClicked(self, currentPage, currentImage, imagedata, wallheavenApi):
         args = self.genArgs(wallheavenApi)
         print(f"args : {args}")
         imagedata[0] = str(self.getImageData(args, wallheavenApi))
