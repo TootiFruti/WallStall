@@ -4,6 +4,7 @@ from PyQt5 import uic
 import requests
 from src.wallpaper_fetcher import wallFetcher
 from datetime import datetime
+import os
 
 
 class MainWindow(QMainWindow):
@@ -39,11 +40,14 @@ class MainWindow(QMainWindow):
             fileName = str(datetime.now()).replace(
                 ":", "-").replace(".", "-").replace(" ", "-")
             imgPath = f"{imgPath}/{fileName}.{file_type}"
-            img = requests.get(url).content
-            with open(imgPath, "wb") as f:
-                f.write(img)
-                print(f"saved the image at {imgPath}")
-                f.close()
+            if os.path.isfile(imgPath):
+                print(f"{imgPath} already exists.")
+            else:
+                img = requests.get(url).content
+                with open(imgPath, "wb") as f:
+                    f.write(img)
+                    print(f"saved the image at {imgPath}")
+                    f.close()
 
     def setImage(self, url, currentImage):
         img = QImage()
