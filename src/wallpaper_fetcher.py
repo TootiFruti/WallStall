@@ -45,7 +45,7 @@ def wallFetcher(wallheaven_api, args):
     except KeyError:
         atleast = default_args["atleast"]
     try:
-        ratio = args["ratio"]
+        ratio = args["ratio"].replace(" ", ",")
     except KeyError:
         ratio = default_args["ratio"]
     try:

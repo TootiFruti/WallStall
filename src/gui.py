@@ -26,13 +26,16 @@ class MainWindow(QMainWindow):
             lambda: self.onSearchBarBtnClicked(currentPage, currentImage, imagedata, wallheavenApi))
 
         self.saveTheImageBtn.clicked.connect(
-            lambda: self.saveImage(currentImage, imagedata, "test_img.png"))
+            lambda: self.saveImage(currentImage, imagedata, "test_img"))
 
-    def saveImage(self, currentImage, imagedata, imgPath):
+    def saveImage(self, currentImage, imagedata, imgName):
         imagedata = eval(imagedata[0])
         url = imagedata[currentImage[0]][1]
+        file_type = imagedata[currentImage[0]][3][6::]
+        imgPath = f"{imgName}.{file_type}"
+        img = requests.get(url).content
         with open(imgPath, "wb") as f:
-            f.write(requests.get(url).content)
+            f.write(img)
             print(f"saved the image at {imgPath}")
             f.close()
 
@@ -89,7 +92,7 @@ class MainWindow(QMainWindow):
         id = temp[0]
         resolution = temp[2]
         file_type = temp[3]
-        imageSize = temp[4]*(1/125000)
+        imageSize = temp[4] * 0.00000095367432
         path = temp[1]
         text = f"Site: {site}\nID: {id}\nResolution: {resolution}\nImage type: {file_type}\nImage size: {round(imageSize, 1)}MB\nImage link: {path}"
         self.TextArea.setText(text)
@@ -123,7 +126,8 @@ class MainWindow(QMainWindow):
             "tagname": self.searchBar.text(),
             "purity": purity,
             "categories": categories,
-            "sorting": sorting
+            "sorting": sorting,
+            "ratio": self.resolution.text()
         }
         return t
 
