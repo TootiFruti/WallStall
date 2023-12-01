@@ -1,8 +1,9 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5 import uic
 import requests
 from src.wallpaper_fetcher import wallFetcher
+from datetime import datetime
 
 
 class MainWindow(QMainWindow):
@@ -26,18 +27,23 @@ class MainWindow(QMainWindow):
             lambda: self.onSearchBarBtnClicked(currentPage, currentImage, imagedata, wallheavenApi))
 
         self.saveTheImageBtn.clicked.connect(
-            lambda: self.saveImage(currentImage, imagedata, "test_img"))
+            lambda: self.saveImage(currentImage, imagedata))
 
-    def saveImage(self, currentImage, imagedata, imgName):
-        imagedata = eval(imagedata[0])
-        url = imagedata[currentImage[0]][1]
-        file_type = imagedata[currentImage[0]][3][6::]
-        imgPath = f"{imgName}.{file_type}"
-        img = requests.get(url).content
-        with open(imgPath, "wb") as f:
-            f.write(img)
-            print(f"saved the image at {imgPath}")
-            f.close()
+    def saveImage(self, currentImage, imagedata):
+        imgPath = QFileDialog.getExistingDirectory(
+            self, "Open Directory", "/home")
+        if imgPath:
+            imagedata = eval(imagedata[0])
+            url = imagedata[currentImage[0]][1]
+            file_type = imagedata[currentImage[0]][3][6::]
+            fileName = str(datetime.now()).replace(
+                ":", "-").replace(".", "-").replace(" ", "-")
+            imgPath = f"{imgPath}/{fileName}.{file_type}"
+            img = requests.get(url).content
+            with open(imgPath, "wb") as f:
+                f.write(img)
+                print(f"saved the image at {imgPath}")
+                f.close()
 
     def setImage(self, url, currentImage):
         img = QImage()
