@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPixmap, QImage
 from PyQt5 import uic
 import requests
 from src.wallpaper_fetcher import wallFetcher
+from src.preferencesWindow import prefencesWindow
 from datetime import datetime
 import os
 
@@ -28,11 +29,28 @@ class MainWindow(QMainWindow):
             lambda: self.onSearchBarBtnClicked(currentPage, currentImage, imagedata, wallheavenApi))
 
         self.saveTheImageBtn.clicked.connect(
-            lambda: self.saveImage(currentImage, imagedata))
+            lambda: self.saveImage(currentImage, imagedata, daddypath))
 
-    def saveImage(self, currentImage, imagedata):
-        imgPath = QFileDialog.getExistingDirectory(
-            self, "Open Directory", "/home")
+        self.Preferences.triggered.connect(
+            lambda: self.PreferencesWindow(daddypath))
+
+    def PreferencesWindow(self, daddypath):
+        self.PWin = prefencesWindow(daddypath)
+        self.PWin.show()
+
+    def saveImage(self, currentImage, imagedata, daddypath):
+        if self.defaultSaveLocationRadioBtn.isChecked():
+            conf = f"{daddypath}data/config.json"
+            with open(conf, 'r') as f:
+                imgPath = eval(f.read())["defaultSaveLocation"][0]
+                f.close()
+            if os.path.isdir(imgPath):
+                pass
+            else:
+                print(f"invaild path: {imgPath}")
+        else:
+            imgPath = QFileDialog.getExistingDirectory(
+                self, "Open Directory", "/home")
         if imgPath:
             imagedata = eval(imagedata[0])
             url = imagedata[currentImage[0]][1]
@@ -137,7 +155,7 @@ class MainWindow(QMainWindow):
             "purity": purity,
             "categories": categories,
             "sorting": sorting,
-            "ratio": self.resolution.text()
+            "resolutions": self.resolution.text()
         }
         return t
 

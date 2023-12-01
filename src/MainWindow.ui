@@ -58,7 +58,20 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item alignment="Qt::AlignBottom">
+          <item>
+           <widget class="QRadioButton" name="defaultSaveLocationRadioBtn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Use Default Save Location</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QFrame" name="frame_3">
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -162,13 +175,56 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout">
-             <item row="1" column="0">
-              <widget class="QRadioButton" name="general">
+             <item row="3" column="0" colspan="2">
+              <widget class="QLineEdit" name="resolution">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="placeholderText">
+                <string>enter specific resolution seperated by comma</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="NSFW">
                <property name="text">
-                <string>General</string>
+                <string>NSFW</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QRadioButton" name="sfw">
+               <property name="text">
+                <string>SFW</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QRadioButton" name="people">
+               <property name="text">
+                <string>people</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QRadioButton" name="anime">
+               <property name="text">
+                <string>anime</string>
                </property>
                <property name="autoExclusive">
                 <bool>false</bool>
@@ -209,16 +265,6 @@
                </item>
               </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QRadioButton" name="people">
-               <property name="text">
-                <string>people</string>
-               </property>
-               <property name="autoExclusive">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
              <item row="0" column="1">
               <widget class="QRadioButton" name="sketchy">
                <property name="text">
@@ -229,49 +275,16 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <widget class="QRadioButton" name="NSFW">
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="general">
                <property name="text">
-                <string>NSFW</string>
-               </property>
-               <property name="autoExclusive">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QRadioButton" name="sfw">
-               <property name="text">
-                <string>SFW</string>
+                <string>General</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
                </property>
                <property name="autoExclusive">
                 <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QRadioButton" name="anime">
-               <property name="text">
-                <string>anime</string>
-               </property>
-               <property name="autoExclusive">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0" colspan="2">
-              <widget class="QLineEdit" name="resolution">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="placeholderText">
-                <string>enter specific resolution seperated by comma</string>
                </property>
               </widget>
              </item>
@@ -355,6 +368,7 @@
     <property name="title">
      <string>Edit</string>
     </property>
+    <addaction name="Preferences"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -366,6 +380,11 @@
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="Preferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

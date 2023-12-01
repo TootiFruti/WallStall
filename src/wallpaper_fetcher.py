@@ -9,7 +9,8 @@ default_args = {
     "sorting": "random",
     "atleast": "",
     "ratio": "",
-    "pages": 1
+    "pages": 1,
+    "resolutions": ""
 }
 
 
@@ -52,7 +53,11 @@ def wallFetcher(wallheaven_api, args):
         pages = args["pages"]
     except KeyError:
         pages = default_args["pages"]
-    query_url = f"{BASE_URL}&q={tagname}&categories={categories}&purity={purity}&sorting={sorting}&atleast={atleast}&ratio={ratio}&page={pages}"
+    try:
+        resolutions = args["resolutions"]
+    except KeyError:
+        resolutions = default_args["resolutions"]
+    query_url = f"{BASE_URL}&q={tagname}&categories={categories}&purity={purity}&sorting={sorting}&atleast={atleast}&ratio={ratio}&resolutions={resolutions}&page={pages}"
     print(query_url)
     data = requests.get(query_url)
     data = data.json()["data"]
