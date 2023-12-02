@@ -1,10 +1,18 @@
 #!/usr/bin/python3
 from src import gui
+from sys import argv
 
-daddyPath = "./"
-with open("./data/config.json", 'r') as f:
+a = argv[0]
+for i in range(len(a)):
+    if a[-i] == "/" and i != 0:
+        daddyPath = a[0:len(a)-i]
+        break
+del a
+configPath = f"{daddyPath}/data/config.json"
+with open(configPath, 'r') as f:
     a = eval(f.read())
     wallheavenApi = a["wallheaven"][0]
     f.close()
+del configPath
 
 gui.main(daddyPath, wallheavenApi)
