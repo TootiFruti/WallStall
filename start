@@ -8,6 +8,7 @@ for i in range(1, len(a)):
         daddyPath = a[0:len(a)-i]
         break
 del a
+print(f"daddyPath: {daddyPath}")
 configPath = f"{daddyPath}/data/config.json"
 with open(configPath, 'r') as f:
     a = eval(f.read())

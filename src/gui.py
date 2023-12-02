@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5 import uic
 import requests
@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
 
     def saveImage(self, currentImage, imagedata, daddypath):
         if self.defaultSaveLocationRadioBtn.isChecked():
-            conf = f"{daddypath}data/config.json"
+            conf = f"{daddypath}/data/config.json"
             with open(conf, 'r') as f:
                 imgPath = eval(f.read())["defaultSaveLocation"][0]
                 f.close()
@@ -57,7 +57,7 @@ class MainWindow(QMainWindow):
             file_type = imagedata[currentImage[0]][3][6::]
             fileName = str(datetime.now()).replace(
                 ":", "-").replace(".", "-").replace(" ", "-")
-            imgPath = f"{imgPath}/{fileName}.{file_type}"
+            imgPath = f"{imgPath}/WallStallsave-{fileName}.{file_type}"
             if os.path.isfile(imgPath):
                 print(f"{imgPath} already exists.")
             else:
@@ -66,6 +66,20 @@ class MainWindow(QMainWindow):
                     f.write(img)
                     print(f"saved the image at {imgPath}")
                     f.close()
+            with open(f"{daddypath}/data/config.json", "r") as f:
+                savedImgPopup = eval(str(f.read()))["savedMsgPopUp"]
+                f.close()
+            if savedImgPopup is False:
+                msg = QMessageBox()
+                msg.setWindowTitle("Image saved")
+                msg.setText("Image saved")
+                msg.exec_()
+
+        else:
+            msg = QMessageBox()
+            msg.setWindowTitle("No save location found")
+            msg.setText("No save location found")
+            msg.exec_()
 
     def setImage(self, url, currentImage):
         img = QImage()
@@ -81,6 +95,12 @@ class MainWindow(QMainWindow):
 
     def getImageData(self, args, wallheavenApi):
         ImagesData = wallFetcher(wallheavenApi, args)
+        if len(ImagesData) == 0:
+            msg = QMessageBox()
+            msg.setWindowTitle(
+                "Could not found any wallpapers for current condition")
+            msg.setText("Could not found any wallpapers for current condition")
+            msg.exec_()
         return ImagesData
 
     def onLeftClick(self, currentImage, imagedata):
@@ -96,23 +116,31 @@ class MainWindow(QMainWindow):
                 "wallheaven,cc", [str(imagedata)], [currentImage[0]-1])
 
     def onRightClick(self, currentPage, currentImage, imagedata, wallheavenApi):
-        imgdata = eval(imagedata[0])
-        print(f"currentImage: {currentImage[0]}")
-        url = imgdata[currentImage[0]+1][1]
-        print(f"currentImage[0]+1: {currentImage[0]+1}")
-        self.setImage(url, currentImage)
-        self.updateTextArea("wallheaven,cc", [str(imgdata)], currentImage)
-        currentImage[0] = currentImage[0] + 1
-        if currentImage[0] == 23:
-            print("Reached right end!\nLoading more data..")
-            args = self.genArgs(wallheavenApi)
-            currentPage[0] += 1
-            args["pages"] = currentPage[0]
-            imgdata = self.getImageData(
-                args, wallheavenApi)
-            imagedata[0] = str(imgdata)
-            print("Loaded!")
-            currentImage[0] = 0
+        try:
+            imgdata = eval(imagedata[0])
+            print(f"currentImage: {currentImage[0]}")
+            url = imgdata[currentImage[0]+1][1]
+            print(f"currentImage[0]+1: {currentImage[0]+1}")
+            self.setImage(url, currentImage)
+            self.updateTextArea("wallheaven,cc", [str(imgdata)], currentImage)
+            currentImage[0] = currentImage[0] + 1
+            if currentImage[0] == 23:
+                print("Reached right end!\nLoading more data..")
+                args = self.genArgs(wallheavenApi)
+                currentPage[0] += 1
+                args["pages"] = currentPage[0]
+                imgdata = self.getImageData(
+                    args, wallheavenApi)
+                imagedata[0] = str(imgdata)
+                print("Loaded!")
+                currentImage[0] = 0
+        except KeyError:
+            print("Reached the end of wallpapers.")
+            msg = QMessageBox()
+            msg.setWindowTitle("Reached the end")
+            msg.setText(
+                "REACHED THE END.\nNO MORE WALLPAPERS FOR CURRENT CONDITIONS.")
+            msg.exec_()
 
     def updateTextArea(self, site, imagedata, currentImage):
         imagedata = eval(imagedata[0])
