@@ -25,10 +25,10 @@ def wallFetcher(wallheaven_api, args):
         BASE_URL = f"https://wallhaven.cc/api/v1/search?apikey={wallheaven_api}"
 
     try:
-        tagname = args["tagname"]
+        tagname = args["tagname"].replace(" ", "+")
     except KeyError:
         tagname = default_args["tagname"]
-    tagname.replace(" ", "+")
+
     try:
         categories = args["categories"]
     except KeyError:
