@@ -97,7 +97,6 @@ class MainWindow(QMainWindow):
         new_height = int(new_width / aspectRatio)
         scaled_pixmap = img.scaled(new_width, new_height)
         self.Image.setPixmap(scaled_pixmap)
-        print(f"current image = {url} currentImage={currentImage[0]}")
 
     def getImageData(self, args, wallheavenApi):
         ImagesData = wallFetcher(wallheavenApi, args)
@@ -124,9 +123,7 @@ class MainWindow(QMainWindow):
     def onRightClick(self, currentPage, currentImage, imagedata, wallheavenApi):
         try:
             imgdata = eval(imagedata[0])
-            print(f"currentImage: {currentImage[0]}")
             url = imgdata[currentImage[0]+1][1]
-            print(f"currentImage[0]+1: {currentImage[0]+1}")
             self.setImage(url, currentImage)
             self.updateTextArea("wallheaven,cc", [str(imgdata)], currentImage)
             currentImage[0] = currentImage[0] + 1
@@ -205,7 +202,6 @@ class MainWindow(QMainWindow):
 
     def onSearchBarBtnClicked(self, currentPage, currentImage, imagedata, wallheavenApi):
         args = self.genArgs(wallheavenApi)
-        print(f"args : {args}")
         imagedata[0] = str(self.getImageData(args, wallheavenApi))
         currentImage[0] = 0
         imagedata = eval(imagedata[0])

@@ -58,7 +58,6 @@ def wallFetcher(wallheaven_api, args):
     except KeyError:
         resolutions = default_args["resolutions"]
     query_url = f"{BASE_URL}&q={tagname}&categories={categories}&purity={purity}&sorting={sorting}&atleast={atleast}&ratio={ratio}&resolutions={resolutions}&page={pages}"
-    print(query_url)
     data = requests.get(query_url)
     data = data.json()["data"]
     # print(json.dumps(data, indent=2))
