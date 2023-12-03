@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
         file_type = temp[3]
         imageSize = temp[4] * 0.00000095367432
         path = temp[1]
-        text = f"Site: {site}\nID: {id}\nResolution: {resolution}\nImage type: {file_type}\nImage size: {round(imageSize, 1)}MB\nImage link: {path}"
+        text = f"Site: {site}\nResolution: {resolution}\nImage type: {file_type}\nImage size: {round(imageSize, 1)}MB\nImage link: {path}"
         self.TextArea.setText(text)
 
     def genArgs(self, wallheavenApi):
