@@ -58,7 +58,7 @@ class prefencesWindow(QMainWindow):
             f.close()
         msg = QMessageBox()
         msg.setWindowTitle("Saved the API")
-        msg.setText("Saved the API")
+        msg.setText("Saved the API.\nRestart the App.")
         msg.exec_()
 
     def browsefile(self):

@@ -169,12 +169,22 @@ class MainWindow(QMainWindow):
                 purity += "111/"
             else:
                 print("COULDNT FIND AN API KEY, DROPPED NSFW CODE")
+                msg = QMessageBox()
+                msg.setWindowTitle("NO API FOUND")
+                msg.setText(
+                    "Need an vaild API for NSFW tag. Dropping NSFW for now")
+                msg.exec_()
 
         if self.sketchy.isChecked():
             if len(wallheavenApi.replace(" ", "").lower()) != 0:
                 purity += "110/"
             else:
                 print("COULDNT FIND AN API KEY, DROPPED sketch CODE")
+                msg = QMessageBox()
+                msg.setWindowTitle("NO API FOUND")
+                msg.setText(
+                    "Need an vaild API for sketchy tag. Dropping NSFW for now")
+                msg.exec_()
 
         if self.general.isChecked():
             categories += "100/"
