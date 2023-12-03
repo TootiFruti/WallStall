@@ -34,6 +34,12 @@ class MainWindow(QMainWindow):
         self.Preferences.triggered.connect(
             lambda: self.PreferencesWindow(daddypath))
 
+        self.actionQuit.triggered.connect(lambda: self.quit())
+
+    def quit(self):
+        print("quiting..")
+        exit()
+
     def PreferencesWindow(self, daddypath):
         self.PWin = prefencesWindow(daddypath)
         self.PWin.show()

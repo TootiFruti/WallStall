@@ -19,8 +19,31 @@
   <property name="windowTitle">
    <string>WallStall</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow{
+	background-color:  #808080
+}
+QFrame{
+	background-color:   #808080
+}
+
+QFrame { border: 0; }
+
+QPushButton{
+	background-color: #aab7b8
+}
+QLineEdit{
+	background-color: #aab7b8
+}
+QComboBox{
+	background-color: #aab7b8
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QFrame" name="frame_2">
       <property name="sizePolicy">
@@ -366,6 +389,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -386,6 +410,11 @@
   <action name="Preferences">
    <property name="text">
     <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>

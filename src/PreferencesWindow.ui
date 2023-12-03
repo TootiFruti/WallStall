@@ -13,10 +13,38 @@
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow{
+	background-color:  #808080
+}
+QTabWidget{
+	background-color:  #808080
+}
+QTabWidget{ border: 0}
+
+QFrame{
+	background-color:   #808080
+}
+
+QFrame { border: 0; }
+
+QPushButton{
+	background-color: #aab7b8
+}
+QLineEdit{
+	background-color: #aab7b8
+}
+QComboBox{
+	background-color: #aab7b8
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
